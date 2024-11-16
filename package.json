@@ -1,33 +1,37 @@
 {
-  "name": "matrimony-be",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "dev": "node index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/mi-tec/matrimony-be.git"
-  },
-  "author": "Migara Karunarathne",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/mi-tec/matrimony-be/issues"
-  },
-  "homepage": "https://github.com/mi-tec/matrimony-be#readme",
-  "dependencies": {
-    "@hookform/resolvers": "^3.3.4",
-    "@radix-ui/react-label": "^2.0.2",
-    "@radix-ui/react-slot": "^1.0.2",
-    "bcrypt": "^5.1.1",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.18.3",
-    "jsonwebtoken": "^9.0.2",
-    "mysql2": "^3.9.2",
-    "react-hook-form": "^7.51.0",
-    "zod": "^3.22.4"
-  }
+	"name": "matrimony-be",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+		"dev": "nodemon index.js",
+		"start": "node index.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+ssh://git@github.com/mi-tec/matrimony-be.git"
+	},
+	"author": "Migara Karunarathne",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/mi-tec/matrimony-be/issues"
+	},
+	"homepage": "https://github.com/mi-tec/matrimony-be#readme",
+	"dependencies": {
+		"@hookform/resolvers": "^3.3.4",
+		"@radix-ui/react-label": "^2.0.2",
+		"@radix-ui/react-slot": "^1.0.2",
+		"bcrypt": "^5.1.1",
+		"cors": "^2.8.5",
+		"dotenv": "^16.4.5",
+		"express": "^4.18.3",
+		"jsonwebtoken": "^9.0.2",
+		"mysql2": "^3.9.2",
+		"react-hook-form": "^7.51.0",
+		"zod": "^3.22.4"
+	},
+	"devDependencies": {
+		"nodemon": "^3.1.7"
+	}
 }
