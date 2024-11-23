@@ -5,35 +5,26 @@ import { queries } from "../../../../controller/queries/queries.js";
 
 export const login = async (req, res) => {
   try {
-    const { username, password, adminType } = req?.body;
+    const { username, password } = req?.body;
 
-    if (!username || !password || !adminType) {
-      throw new Error("Username or Password or Admin Type is empty");
+    if (!username || !password) {
+      throw new Error("Username or Password is empty");
     }
 
-    let adminTableName = "";
-
-    if (adminType === "nurse") {
-      adminTableName = "TBL_NURSE";
-    } else if (adminType === "doctor") {
-      adminTableName = "TBL_DOCTOR";
-    }
-
-    const _user = await dbquery(
-      `SELECT * FROM ${adminTableName} WHERE USERNAME = ?`,
-      [username],
-    );
+    const _user = await dbquery("SELECT * FROM TBL_USERS WHERE USERNAME = ?", [
+      username,
+    ]);
 
     if (_user?.length === 0) {
       throw new Error("User cannot found");
     }
 
     const {
-      USER_ID: id,
+      ID: id,
       USERNAME: _username,
       EMAIL: email,
       PASSWORD: _password,
-      PERMITTED_SERVICE: service,
+      IS_ON_BOARDING: _isOnBoarding,
     } = _user[0];
 
     const verifyPassword = await bcrypt.compare(password, _password);
@@ -56,18 +47,15 @@ export const login = async (req, res) => {
       },
     );
 
-    dbquery(`UPDATE ${adminTableName} SET ACCESS_TOKEN = ? WHERE USER_ID = ?`, [
-      _accessToken,
-      id,
-    ]);
+    dbquery(queries.updateAccessToken, [_accessToken, id]);
 
     const _userResponse = {
       user: {
         id: id,
         username: _username,
         email: email,
-        service: service,
-        type: adminType,
+        isOnBoarding: _isOnBoarding,
+        type: "user",
       },
       accessToken: _accessToken,
     };
