@@ -20,7 +20,6 @@ export const createAppointments = async (req, res) => {
 
     const date = new Date(appointmentDate);
 
-    // Format the date as 'YYYY-MM-DD HH:MM:SS'
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
     const day = String(date.getDate()).padStart(2, "0");
@@ -50,7 +49,16 @@ export const getAppointment = async (req, res) => {
     }
 
     const _response = await dbquery(
-      "SELECT * FROM TBL_APPOINTMENTS WHERE service_name = ?",
+      `SELECT
+	*
+      FROM
+	TBL_APPOINTMENTS ta
+      INNER JOIN TBL_USERS tu ON
+	tu.ID = ta.USER_ID
+      INNER JOIN TBL_USERS_HEALTH_INFO tuhi ON
+	tuhi.USER_ID  = ta.USER_ID
+      WHERE
+	service_name = ?`,
       [serviceName],
     );
 
@@ -68,28 +76,30 @@ export const getAppointmentSingle = async (req, res) => {
     let value = "";
 
     if (userId) {
-      columnName = `USER_ID`;
+      columnName = `ta.USER_ID`;
       value = userId;
     } else if (service) {
-      columnName = "SERVICE_NAME";
+      columnName = "ta.SERVICE_NAME";
       value = service;
     }
 
     const _response = await dbquery(
-      `SELECT * FROM TBL_APPOINTMENTS WHERE ${columnName} = ?`,
+      `SELECT
+      *
+     FROM
+	TBL_APPOINTMENTS ta
+           INNER JOIN TBL_USERS tu ON
+	tu.ID = ta.USER_ID
+           INNER JOIN TBL_USERS_HEALTH_INFO tuhi ON
+	tuhi.USER_ID  = ta.USER_ID
+           WHERE ${columnName} = ?`,
       [value],
-    );
-
-    console.log(
-      "_response ->",
-      `SELECT * FROM TBL_APPOINTMENTS WHERE ${columnName} = ?`,
-      _response,
     );
 
     return res
       .status(200)
       .json({ status: 1, msg: "success", data: _response ?? [] });
   } catch (e) {
-    return res.status(400).json({ status: -1, msg: error.message, data: {} });
+    return res.status(400).json({ status: -1, msg: e.message, data: {} });
   }
 };
